@@ -9,23 +9,15 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public function index(){
-        // tambah data menggunakan Eloquent
-        // $data = [
-        //     'username' => 'customer 1',
-        //     'nama' => 'pelanggan',
-        //     'password' => Hash::make('12345'),
-        //     'level_id' => 4
-        // ];
-        // UserModel::insert($data);
-
-        //update data dengan Eloquent
         $data = [
-            'nama' => 'Pelanggan pertama',
+            'level_id' => 2,
+            'username' => 'manager_tiga',
+            'nama' => 'Manager 3',
+            'password' => Hash::make('12345'),
         ];
-        UserModel::where('username', 'customer 1')->update($data); //update data user
+        UserModel::create($data);
 
-        // ambil semua data dari model UserModel
-        $user = UserModel::all(); 
+        $user = UserModel::all();
         return view('user', ['data' => $user]);
     }
 }
