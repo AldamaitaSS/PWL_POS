@@ -26,3 +26,13 @@ Route::get('/level', [LevelController::class, 'index']);
 Route::get('/kategori', [KategoriController::class, 'index']);
 //user
 Route::get('/user', [UserController::class, 'index']);
+//user tambah
+Route::get('/user/tambah', [UserController::class, 'tambah']);
+//tambah simpan
+Route::post('/user/tambah_simpan', [UserController::class, 'tambah_simpan']);
+//ubah
+Route::get('/user/ubah/{id}', [UserController::class, 'ubah']);
+//ubah simpan
+Route::put('/user/ubah_simpan/{id}', [UserController::class, 'ubah_simpan']);
+//delete
+Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
