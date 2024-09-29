@@ -4,7 +4,7 @@
         <div class="input-group" data-widget="sidebar-search">
             <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
             <div class="input-group-append">
-                 <button class="btn btn-sidebar">
+                <button class="btn btn-sidebar">
                     <i class="fas fa-search fa-fw"></i>
                 </button>
             </div>
@@ -40,9 +40,15 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/barang') }}" class="nav-link {{ ($activeMenu =='barang')? 'active' : '' }} ">
+                <a href="{{ url('/barang') }}" class="nav-link {{ ($activeMenu == 'barang')? 'active' : '' }} ">
                     <i class="nav-icon far fa-list-alt"></i>
                     <p>Data Barang</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url('/supplier') }}" class="nav-link {{ $activeMenu == 'supplier' ? 'active' : '' }} ">
+                    <i class="nav-icon far fa-list-alt"></i>
+                    <p>Data Supplier</p>
                 </a>
             </li>
             <li class="nav-header">Data Transaksi</li>
@@ -61,4 +67,3 @@
         </ul>
     </nav>
 </div>
-    
