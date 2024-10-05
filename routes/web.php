@@ -138,3 +138,4 @@ Route::group(['prefix' => 'barang'], function(){
     Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']); //hapus ajax
     Route::delete('/{id}', [BarangController::class, 'destroy']); //hapus data user
 });
+
