@@ -26,8 +26,8 @@ Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
 Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
 
-// Route::middleware(['auth'])->group(function () {
-Route::middleware(['authorize:ADM'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+// Route::middleware(['authorize:ADM,MNG'])->group(function () {
 
     // Route::get('/', [UserController::class, 'index']); //halaman awal
     Route::get('/', [WelcomeController::class, 'index']); //halaman awal
@@ -49,7 +49,7 @@ Route::middleware(['authorize:ADM'])->group(function () {
         Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']); //hapus ajax
         Route::delete('/{id}', [UserController::class, 'destroy']); //hapus data user
     });
-    Route::group(['prefix' => 'level'], function () {
+    Route::group(['prefix'=> 'level','middleware'=>['authorize:ADM,MNG']], function () {
         Route::get('/', [LevelController::class, 'index']); //halaman awal
         Route::post('/list', [LevelController::class, 'list']);  //data user (json)
         Route::get('/create', [LevelController::class, 'create']); //form tambah user
@@ -113,4 +113,7 @@ Route::middleware(['authorize:ADM'])->group(function () {
         Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']); //hapus ajax
         Route::delete('/{id}', [BarangController::class, 'destroy']); //hapus data user
     });
+
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
 });
