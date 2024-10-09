@@ -148,4 +148,6 @@ Route::middleware(['auth'])->group(function(){
         Route::delete('/{id}', [BarangController::class, 'destroy']); //hapus data user
     });
 
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
 });
