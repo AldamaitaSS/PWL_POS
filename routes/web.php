@@ -117,6 +117,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/import', [BarangController::class, 'import']); // Form upload Excel
         Route::post('/import_ajax', [BarangController::class, 'import_ajax']); // Ajax import Excel
         Route::get('/export_excel', [BarangController::class, 'export_excel']); // Cetak Excel
+        Route::get('/export_pdf', [BarangController::class, 'export_pdf']); // Cetak Excel
     });
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
