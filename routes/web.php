@@ -105,7 +105,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create', [BarangController::class, 'create']); //form tambah user
         Route::post('/', [BarangController::class, 'store']); //data user baru
         Route::get('/create_ajax', [BarangController::class, 'create_ajax']); //form tambah user ajax
-        Route::post('/ajax', [BarangController::class, 'store_ajax']); //simpan data user baru ajax
+        Route::post('/barang_ajax', [BarangController::class, 'store_ajax']); //simpan data user baru ajax
         Route::get('/{id}', [BarangController::class, 'show']); //detail user
         Route::get('/{id}/edit', [BarangController::class, 'edit']); //form edit
         Route::put('/{id}', [BarangController::class, 'update']); // simpan perubahan data
@@ -114,6 +114,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']); //confirm delete ajax
         Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']); //hapus ajax
         Route::delete('/{id}', [BarangController::class, 'destroy']); //hapus data user
+        Route::get('/import', [BarangController::class, 'import']); // Form upload Excel
+        Route::post('/import_ajax', [BarangController::class, 'import_ajax']); // Ajax import Excel
     });
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
