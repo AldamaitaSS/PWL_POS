@@ -5,8 +5,11 @@
         <div class="card-header">
             <h3 class="card-title">Daftar Kategori</h3>
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('kategori/create') }}">Tambah</a>
-                <button onclick="modalAction('{{ url('/kategori/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
+                {{-- <a class="btn btn-sm btn-primary mt-1" href="{{ url('kategori/create') }}">Tambah</a> --}}
+                <button onclick="modalAction('{{ url('/kategori/import') }}')" class="btn btn-info">Import Kategori</button>
+                <a href="{{ url('/kategori/export_excel') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export Kategori</a>
+                <a href="{{ url('/kategori/export_pdf') }}" class="btn btn-warning"><i class="fa fa-file-pdf"></i> Export Kategori</a>
+                <button onclick="modalAction('{{ url('/kategori/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax(Ajax)</button>
             </div>
         </div>
         <div class="card-body">
@@ -16,8 +19,8 @@
             @if (session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
-            {{-- tidak menggunakan filter untuk kategori --}}
-            {{-- <div class="row">
+            {{-- memfilter --}}
+            <div class="row">
                 <div class="col-md-12">
                     <div class="form-group row">
                         <label class="col-1 control-label col-form-label">Filter:</label>
@@ -32,7 +35,7 @@
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
             <table class="table table-bordered table-striped table-hover table-sm" id="table_kategori">
                 <thead>
                     <tr>
@@ -63,11 +66,10 @@
                 ajax: {
                     "url": "{{ url('kategori/list') }}",
                     "dataType": "json",
-                    "type": "POST"
-                    // tidak perlu data dibawah karena tidak ada filter
-                    // "data": function (d) {
-                    //     d.kategori_id = $('#kategori_id').val();
-                    // }
+                    "type": "POST",
+                    "data": function (d) {
+                        d.kategori_id = $('#kategori_id').val();
+                    }
                 },
                 columns: [{
                     data: "DT_RowIndex",
@@ -92,9 +94,9 @@
                     searchable: false
                 }]
             });
-            // $('#kategori_id').on('change',function(){
-            //     dataKategori.ajax.reload();
-            // });
+            $('#kategori_id').on('change',function(){
+                dataKategori.ajax.reload();
+            });
         });
     </script>
 @endpush
