@@ -116,6 +116,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [BarangController::class, 'destroy']); //hapus data user
         Route::get('/import', [BarangController::class, 'import']); // Form upload Excel
         Route::post('/import_ajax', [BarangController::class, 'import_ajax']); // Ajax import Excel
+        Route::get('/export_excel', [BarangController::class, 'export_excel']); // Cetak Excel
     });
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
