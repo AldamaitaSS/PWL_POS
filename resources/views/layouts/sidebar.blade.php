@@ -91,6 +91,11 @@
                     <p>Data Supplier</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <form action="{{ url('/logout')}}">
+                  <button type="submit" class="btn btn-block bg-gradient-danger" fdprocessedid="idnj1o">Logout</button>
+                </form>
+              </li>
         </ul>
     </nav>
 </div>
