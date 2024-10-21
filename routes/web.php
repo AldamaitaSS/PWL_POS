@@ -5,6 +5,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Models\UserModel;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,7 @@ use App\Http\Controllers\AuthController;
 Route::pattern('id', '[0-9]+');
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
-Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::get('logout', [AuthController::class, 'logout']);
 Route::get('register', [AuthController::class, 'register'])->name('register');
 Route::post('register', [AuthController::class, 'postRegister']);
 
@@ -33,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Route::get('/', [UserController::class, 'index']); //halaman awal
     Route::get('/', [WelcomeController::class, 'index']); //halaman awal
+    
+    Route::get('/profile', [ProfileController::class, 'index']);
+    Route::post('upload_foto', [ProfileController::class, 'upload_foto'])->name('upload.foto');
 
     // masukkan rooute yang perlu diautentikasi disini
     Route::group(['prefix' => 'user'], function () {
@@ -55,6 +59,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/export_excel', [UserController::class, 'export_excel']); // Cetak Excel
         Route::get('/export_pdf', [UserController::class, 'export_pdf']); // Cetak Excel
     });
+
+    Route::middleware(['authorize:ADM,MNG,STF,CUS'])->group(function(){
+        Route::get('/profile', [ProfileController::class, 'index']);
+        Route::get('/profile/{id}/edit_ajax', [ProfileController::class, 'edit_ajax']);
+        Route::put('/profile/{id}/update_ajax', [ProfileController::class, 'update_ajax']);
+        Route::get('/profile/{id}/edit_foto', [ProfileController::class, 'edit_foto']);
+        Route::put('/profile/{id}/update_foto', [ProfileController::class, 'update_foto']);
+    });
+
     Route::group(['prefix'=> 'level','middleware'=>['authorize:ADM']], function () {
         Route::get('/', [LevelController::class, 'index']); //halaman awal
         Route::post('/list', [LevelController::class, 'list']);  //data user (json)
@@ -138,5 +151,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-});
+    
 
+});
