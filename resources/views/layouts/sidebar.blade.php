@@ -1,25 +1,9 @@
 <div class="sidebar">
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-            <img @if (file_exists(public_path(
-                        'storage/uploads/profile_pictures/' .
-                            auth()->user()->username .
-                            '/' .
-                            auth()->user()->username .
-                            '_profile.png'))) src="{{ asset('storage/uploads/profile_pictures/' . auth()->user()->username . '/' . auth()->user()->username . '_profile.png') }}" @endif
-                @if (file_exists(public_path(
-                            'storage/uploads/profile_pictures/' .
-                                auth()->user()->username .
-                                '/' .
-                                auth()->user()->username .
-                                '_profile.jpg'))) src="{{ asset('storage/uploads/profile_pictures/' . auth()->user()->username . '/' . auth()->user()->username . '_profile.jpg') }}" @endif
-                @if (file_exists(public_path(
-                            'storage/uploads/profile_pictures/' .
-                                auth()->user()->username .
-                                '/' .
-                                auth()->user()->username .
-                                '_profile.jpeg'))) src="{{ asset('storage/uploads/profile_pictures/' . auth()->user()->username . '/' . auth()->user()->username . '_profile.jpeg') }}" @endif
-                class="img-circle elevation-2" alt="User Image">
+            <img src="{{ auth()->user()->avatar ? asset('storage/photos/' . auth()->user()->avatar) : asset('/public/img/pp.png') }}"
+                class="img-circle elevation-2" 
+                alt="User Image">
         </div>
         <div class="info">
             <a href="{{ url('/profile') }}" class="d-block">{{ auth()->user()->username }}</a>
@@ -95,7 +79,7 @@
                 <form action="{{ url('/logout')}}">
                   <button type="submit" class="btn btn-block bg-gradient-danger" fdprocessedid="idnj1o">Logout</button>
                 </form>
-              </li>
+            </li>
         </ul>
     </nav>
 </div>
