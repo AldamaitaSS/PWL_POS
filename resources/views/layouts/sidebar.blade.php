@@ -1,7 +1,7 @@
 <div class="sidebar">
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-            <img src="{{ auth()->user()->avatar ? asset('storage/photos/' . auth()->user()->avatar) : asset('/public/img/pp.png') }}"
+            <img src="{{ auth()->user()->profile_image ? asset('storage/photos/' . auth()->user()->profile_image) : asset('/public/img/pp.png') }}"
                 class="img-circle elevation-2" 
                 alt="User Image">
         </div>
@@ -55,6 +55,12 @@
                     <p>Data Barang</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ url('/supplier') }}" class="nav-link {{ $activeMenu == 'supplier' ? 'active' : '' }} ">
+                    <i class="nav-icon far fa-user"></i>
+                    <p>Data Supplier</p>
+                </a>
+            </li>
             <li class="nav-header">Data Transaksi</li>
             <li class="nav-item">
                 <a href="{{ url('/stok') }}" class="nav-link {{ $activeMenu == 'stok' ? 'active' : '' }} ">
@@ -63,19 +69,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/barang') }}" class="nav-link {{ $activeMenu == 'penjualan' ? 'active' : '' }} ">
+                <a href="{{ url('/penjualan') }}" class="nav-link {{ $activeMenu == 'penjualan' ? 'active' : '' }} ">
                     <i class="nav-icon fas fa-cash-register"></i>
                     <p>Transaksi Penjualan</p>
                 </a>
             </li>
-            <li class="nav-header">Data Supplier</li>
-            <li class="nav-item">
-                <a href="{{ url('/supplier') }}" class="nav-link {{ $activeMenu == 'supplier' ? 'active' : '' }} ">
-                    <i class="nav-icon far fa-user"></i>
-                    <p>Data Supplier</p>
-                </a>
-            </li>
-            <li class="nav-item">
+            <li class="nav-item mt-4">
                 <form action="{{ url('/logout')}}">
                   <button type="submit" class="btn btn-block bg-gradient-danger" fdprocessedid="idnj1o">Logout</button>
                 </form>

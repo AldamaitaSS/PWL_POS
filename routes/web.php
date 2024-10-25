@@ -10,6 +10,7 @@ use App\Http\Controllers\StokController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\PenjualanController;
 use App\Models\KategoriModel;
 use Illuminate\Support\Facades\Route;
 
@@ -39,12 +40,26 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/', [UserController::class, 'index']); //halaman awal
     Route::get('/', [WelcomeController::class, 'index']); //halaman awal
     
+    // Route::group(['middleware' => 'authorize:ADM,MNG,STF,CUS'], function () { 
+    //     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index'); 
+    //     Route::patch('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update'); 
+    // });    
     Route::group(['middleware' => 'authorize:ADM,MNG,STF,CUS'], function () {
         Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
         Route::patch('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
     });    
-
-
+    // Route::group(['middleware' => 'authorize:ADM,MNG,STF,CUS'], function () {
+    //     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    //     Route::patch('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
+    //     Route::post('/profile/upload-foto', [ProfileController::class, 'upload_foto'])->name('profile.upload_foto');
+    // });    
+    
+    // Route::middleware(['auth'])->group(function () {
+    //     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    //     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    //     Route::post('/profile/update-photo', [ProfileController::class, 'updatePhoto'])->name('profile.updatePhoto');
+    // });
+    
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
@@ -68,7 +83,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/export_pdf', [LevelController::class, 'export_pdf']);              // ajax export pdf
     });
 
-    Route::group(['prefix' => 'user', 'middleware'=> 'authorize:ADM'], function(){
+    Route::group(['prefix' => 'user', 'middleware'=> 'authorize:ADM,MNG'], function(){
         Route::get('/', [UserController::class, 'index']);                          //menampilkan laman awal user
         Route::post('/list', [UserController::class, 'list']);                      //menampilkan data user dalam bentuk json untuk datatables
         Route::get('/create', [UserController::class, 'create']);                   //menampilkan laman form tambah user
@@ -111,7 +126,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     //Semua route di grup ini harus punya role ADM (Administrator)
-    Route::group(['prefix' => 'supplier', 'middleware'=> 'authorize:ADM'], function(){
+    Route::group(['prefix' => 'supplier', 'middleware'=> 'authorize:ADM,MNG'], function(){
         Route::get('/', [SupplierController::class, 'index']);                              //menampilkan laman awal supplier
         Route::post('/list', [SupplierController::class, 'list']);                          //menampilkan data supplier dalam bentuk json untuk datatables
         Route::get('/create', [SupplierController::class, 'create']);                          //menampilkan laman form tambah user
@@ -152,26 +167,41 @@ Route::middleware(['auth'])->group(function () {
 
     //STOK BARANG
     
-    Route::group(['prefix' => 'stok', 'middleware'=> 'authorize:ADM,MNG'], function(){
-        Route::get('/', [StokController::class, 'index']);          // menampilkan halaman awal stok
-        Route::post('/list', [StokController::class, 'list']);      // menampilkan data stok dalam bentuk json untuk datatables
-        Route::get('/create', [StokController::class, 'create']);   // menampilkan halaman form tambah stok
-        Route::get('/create_ajax', [StokController::class, 'create_ajax']);
-        Route::post('/ajax', [StokController::class, 'store_ajax']);
-        Route::post('/', [StokController::class, 'store']);         // menyimpan data stok baru
-        Route::get('/{id}', [StokController::class, 'show']);       // menampilkan detail stok
+    Route::group(['prefix' => 'stok', 'middleware'=> 'authorize:ADM,MNG,STF,KSR'], function(){
+        Route::get('/', [StokController::class, 'index']);                                //menampilkan laman awal barang
+        Route::post('/list', [StokController::class, 'list']);                            //menampilkan data barang dalam bentuk json untuk datatables
+        Route::get('/create', [StokController::class, 'create']);                          //menampilkan laman form tambah user
+        Route::post('/', [StokController::class, 'store']);
+        Route::get('/{id}', [StokController::class, 'show']);
         Route::get('/{id}/show_ajax', [StokController::class, 'show_ajax']);
-        Route::get('/{id}/edit', [StokController::class, 'edit']);  // menampilkan halaman form edit stok
-        Route::put('/{id}', [StokController::class, 'update']);     // menyimpan perubahan data stok
-        Route::get('/{id}/edit_ajax', [StokController::class, 'edit_ajax']);
-        Route::put('/{id}/update_ajax', [StokController::class, 'update_ajax']);
-        Route::get('/{id}/delete_ajax', [StokController::class, 'confirm_ajax']);
-        Route::delete('/{id}/delete_ajax', [StokController::class, 'delete_ajax']);
-        Route::delete('/{id}', [StokController::class, 'destroy']); // menghapus data stok
+        Route::get('/create_ajax', [StokController::class, 'create_ajax']);               //menampilkan laman form tambah barang AJAX
+        Route::post('/ajax', [StokController::class, 'store_ajax']);                      //menyimpan data barang baru AJAX
+        Route::get('/{id}/edit_ajax', [StokController::class, 'edit_ajax']);              //menampilkan laman form edit barang AJAX
+        Route::put('/{id}/update_ajax', [StokController::class, 'update_ajax']);          //menyimpan perubahan data barang AJAX
+        Route::get('/{id}/delete_ajax', [StokController::class, 'confirm_ajax']);         //menampilkan form confirm hapus data barang AJAX
+        Route::delete('/{id}/delete_ajax', [StokController::class, 'delete_ajax']);       //menghapus data barang AJAX
         Route::get('/import', [StokController::class, 'import']);                         //ajax form upload excel
         Route::post('/import_ajax', [StokController::class, 'import_ajax']);              //ajax import excel
         Route::get('/export_excel', [StokController::class, 'export_excel']);             //ajax export excel
-        Route::get('/export_pdf', [StokController::class, 'export_pdf']);                 //ajax export pdf
+        Route::get('/export_pdf', [StokController::class, 'export_pdf']);                 //ajax export pdf                // ajax export pdf
+    });
+
+    // Transaksi
+      //Semua route di grup ini harus punya role ADM (Administrator), MNG (Manager), dan STF (Staff/Kasir)
+      Route::group(['prefix' => 'penjualan', 'middleware'=> 'authorize:ADM,MNG,STF'], function(){
+        Route::get('/', [PenjualanController::class, 'index']);                                //menampilkan laman awal penjualan
+        Route::post('/list', [PenjualanController::class, 'list']);                            //menampilkan data penjualan dalam bentuk json untuk datatables
+        Route::get('/create_ajax', [PenjualanController::class, 'create_ajax']);               //menampilkan laman form tambah penjualan AJAX
+        Route::post('/ajax', [PenjualanController::class, 'store_ajax']);                      //menyimpan data penjualan baru AJAX
+        Route::get('/{id}/show_ajax', [PenjualanController::class, 'show_ajax']);              //menampilkan form detil data penjualan AJAX
+        Route::get('/{id}/edit_ajax', [PenjualanController::class, 'edit_ajax']);              //menampilkan laman form edit penjualan AJAX
+        Route::put('/{id}/update_ajax', [PenjualanController::class, 'update_ajax']);          //menyimpan perubahan data penjualan AJAX
+        Route::get('/{id}/delete_ajax', [PenjualanController::class, 'confirm_ajax']);         //menampilkan form confirm hapus data penjualan AJAX
+        Route::delete('/{id}/delete_ajax', [PenjualanController::class, 'delete_ajax']);       //menghapus data penjualan AJAX
+        Route::get('/import', [PenjualanController::class, 'import']);                         //menampilkan form impor data penjualan
+        Route::post('/import_ajax', [PenjualanController::class, 'import_ajax']);              //mengimpor file excel ke daftar data penjualan
+        Route::get('/export_excel', [PenjualanController::class, 'export_excel']);             //mengekspor data penjualan dalam bentuk file excel
+        Route::get('/export_pdf', [PenjualanController::class, 'export_pdf']);                 //mengekspor data penjualan dalam bentuk file pdf
     });
 
     // masukkan rooute yang perlu diautentikasi disini

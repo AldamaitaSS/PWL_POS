@@ -65,15 +65,15 @@ class ProfileController extends Controller
         }
 
         // Upload avatar baru jika ada file yang di-upload
-        if (request()->hasFile('avatar')) {
-            if ($user->avatar && file_exists(storage_path('app/public/photos/' . $user->avatar))) {
-                Storage::delete('app/public/photos/'.$user->avatar);
+        if (request()->hasFile('profile_image')) {
+            if ($user->profile_image && file_exists(storage_path('app/public/photos/' . $user->profile_image))) {
+                Storage::delete('app/public/photos/'.$user->profile_image);
             }
 
-            $file = $request->file('avatar');
+            $file = $request->file('profile_image');
             $fileName = $file->hashName() . '.' . $file->getClientOriginalExtension();
-            $request->avatar->move(storage_path('app/public/photos'), $fileName);
-            $user->avatar = $fileName;
+            $request->profile_image->move(storage_path('app/public/photos'), $fileName);
+            $user->profile_image = $fileName;
         }
 
         // Simpan perubahan
