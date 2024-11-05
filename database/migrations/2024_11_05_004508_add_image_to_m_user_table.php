@@ -9,20 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('m_user', function (Blueprint $table) {
-            // $table->string('profile_image')->nullable()->after('password'); // Menambahkan kolom profile_image
+            $table->string('image');
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('m_user', function (Blueprint $table) {
-        //     $table->dropColumn('profile_image'); // Menghapus kolom profile_image saat rollback
+            $table->dropColumn('image');
         });
     }
 };
